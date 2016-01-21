@@ -9,6 +9,8 @@ const PATHS = {
 	build: path.join(__dirname, 'build')
 };
 
+process.env.BABEL_ENV = TARGET;
+
 const common = {
 	entry: PATHS.app,
 	//Add resolve.extensions. '' is needed to allow imports
@@ -36,14 +38,16 @@ const common = {
         //Enable caching for improved performance during development
         //It uses defualt OS directory by default.  If you need something
         //more custom, pass a path to it.  I.e., babel? cacheDirectory=<path>
-        loaders: ['bable?cacheDirectory'],
+        loaders: ['babel?cacheDirectory'],
         include: PATHS.app
       }
     ]
   },
 	plugins: [
 		new HtmlwebpackPlugin({
-			title: 'Kanban app'
+			template: 'node_modules/html-webpack-template/index.html',
+      title: 'Kanban app',
+      appMountId: 'app'
 		})
 	]
 };
