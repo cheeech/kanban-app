@@ -11,7 +11,13 @@ const PATHS = {
 
 const common = {
 	entry: PATHS.app,
-	output: {
+	//Add resolve.extensions. '' is needed to allow imports
+  //without an extension.  Note the .'s before extensions!!!
+  //The matching will fail without!
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+  output: {
 		path: PATHS.build,
 		filename: 'bundle.js'
 	},
@@ -20,8 +26,17 @@ const common = {
       {
         //Test expects a RegExp! Note the slashes!
         test:/\.css$/,
-        loaders: ['style','css'],
+        loaders: ['style', 'css'],
         // Include accepts either a path or an array of paths.
+        include: PATHS.app
+      },
+      // Set up jsx. This accepts js too thanks to RegExp
+      {
+        test: /\.jsx?$/,
+        //Enable caching for improved performance during development
+        //It uses defualt OS directory by default.  If you need something
+        //more custom, pass a path to it.  I.e., babel? cacheDirectory=<path>
+        loaders: ['bable?cacheDirectory'],
         include: PATHS.app
       }
     ]
