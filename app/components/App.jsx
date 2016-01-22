@@ -1,12 +1,13 @@
 import uuid from 'node-uuid';
 import React from 'react';
+import Notes from './Notes.jsx';
 
 export default class App extends React.Component 
 {
   constructor(props) {
     super(props);
     
-    this.addNote = this.addNote.bind(this);
+    // this.addNote = this.addNote.bind(this);
 
     this.state = {
       notes: [
@@ -32,13 +33,12 @@ export default class App extends React.Component
     return (
       <div>
       <button onClick={this.addNote}>+</button>
-        <ul>{notes.map((note) =>
-          <li key={note.id}>{note.task}</li>
-          )}</ul>
+        <Notes notes={notes} onEdit={this.editNote}/>
       </div>
     );
   }
-  addNote(state) {
+  
+  addNote = () => {
     this.setState({
       notes: this.state.notes.concat([{
         id: uuid.v4(),
@@ -47,6 +47,17 @@ export default class App extends React.Component
     }, () => console.log('set state!'));
   };
 
+  editNote = (id, task) => {
+    const notes = this.state.notes.map((note) => {
+      if(note.id === id && task) {
+        note.task = task;
+      }
+
+      return note;
+    });
+  
+    this.setState({notes});
+  };
 }
   
 //   addNote = () => {
